@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="pt-BR" class="is-loading">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#241218" />
+    <meta name="description" content="Sphare — um estudo digital sobre moda, forma e movimento. Quatro maisons, quatro universos." />
+    <title>Sphare — Fashion in another dimension</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./sript.js"></script>
+  </head>
+  <body>
+    <div id="boot-loader" class="loading-screen" role="status" aria-live="polite">
+      <div class="loader-curtain curtain-left" aria-hidden="true"></div>
+      <div class="loader-curtain curtain-right" aria-hidden="true"></div>
+      <div class="loader-content">
+        <p class="loader-eyebrow">Fashion in another dimension</p>
+        <div class="loader-sigil" aria-hidden="true"><i></i><i></i><i></i><span>S</span></div>
+        <div class="loader-wordmark" aria-hidden="true">sphare</div>
+        <p class="loader-status">Abrindo o ateliê</p>
+        <div class="loader-progress" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="loader-count" aria-hidden="true">00 / 03</p>
+        <a class="loader-retry" href="./" hidden>Tentar novamente ↗</a>
+      </div>
+      <p class="loader-footnote">Um estudo sobre forma, luz e movimento.</p>
+    </div>
+    <script>
+      // Mantém uma saída visível mesmo se o módulo React não chegar pela rede.
+      setTimeout(function () {
+        var loader = document.getElementById('boot-loader');
+        if (!loader) return;
+        loader.querySelector('.loader-status').textContent = 'Não foi possível abrir o ateliê. Verifique sua conexão.';
+        loader.querySelector('.loader-retry').hidden = false;
+      }, 15000);
+    </script>
+    <div id="root"></div>
+    <noscript><style>#boot-loader{display:none}html.is-loading{overflow:auto}</style>Ative o JavaScript para explorar a galeria Sphare.</noscript>
+  </body>
+</html>
