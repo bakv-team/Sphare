@@ -205,8 +205,74 @@ html.is-loading { overflow: hidden; }
   mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 84%, transparent);
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 84%, transparent);
 }
+.mcqueen-background {
+  position: absolute;
+  z-index: -2;
+  inset: -7%;
+  pointer-events: none;
+  opacity: .12;
+  background: url('./assets/alexfundo.png') center / cover no-repeat;
+  filter: blur(2px) grayscale(.45) contrast(1.2) brightness(.72) saturate(.7);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  animation: mcqueen-background-drift 28s ease-in-out infinite alternate;
+}
+.victoria-background {
+  position: absolute;
+  z-index: -2;
+  inset: -7%;
+  pointer-events: none;
+  opacity: .11;
+  background: url('./assets/vsfundo.png') center / cover no-repeat;
+  filter: blur(2px) contrast(1.08) saturate(.85) brightness(.82);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  animation: victoria-background-drift 30s ease-in-out infinite alternate;
+}
+.dior-background {
+  position: absolute;
+  z-index: -2;
+  inset: -7%;
+  pointer-events: none;
+  opacity: .14;
+  background: url('./assets/diorfundo.png') center / cover no-repeat;
+  filter: blur(2px) sepia(.3) saturate(.6) contrast(1.15) brightness(.78);
+  mix-blend-mode: multiply;
+  transform-origin: center;
+  animation: dior-background-drift 32s ease-in-out infinite alternate;
+}
+.mcqueen-background::after,.victoria-background::after,.dior-background::after {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  pointer-events: none;
+  opacity: .5;
+  filter: blur(28px);
+  mix-blend-mode: screen;
+  animation: background-bloom 10s ease-in-out infinite alternate;
+}
+.mcqueen-background::after { background: radial-gradient(ellipse at 50% 52%,#e68a9a66,transparent 62%); }
+.victoria-background::after { background: radial-gradient(ellipse at 48% 55%,#ffb1c866,transparent 62%); }
+.dior-background::after { background: radial-gradient(ellipse at 50% 48%,#d9bb6a55,transparent 62%); }
+@keyframes mcqueen-background-drift {
+  from { transform: scale(1.02) translate3d(-1.2%,-.8%,0); filter: blur(2px) grayscale(.55) contrast(1.15) brightness(.65) saturate(.65); }
+  to { transform: scale(1.12) translate3d(1.5%,1%,0); filter: blur(2px) grayscale(.25) contrast(1.3) brightness(.8) saturate(.8); }
+}
+@keyframes victoria-background-drift {
+  from { transform: scale(1.03) translate3d(1.2%,-1%,0) rotate(-.3deg); }
+  to { transform: scale(1.11) translate3d(-1.4%,1%,0) rotate(.3deg); }
+}
+@keyframes dior-background-drift {
+  from { transform: scale(1.03) translate3d(-1% ,1%,0); }
+  to { transform: scale(1.1) translate3d(1.3%,-1.2%,0); }
+}
+@keyframes background-bloom {
+  from { opacity: .28; transform: scale(.9); }
+  to { opacity: .6; transform: scale(1.1); }
+}
 @media (max-width: 600px) {
   .background-canvas { opacity: .85; }
+  .mcqueen-background,.victoria-background,.dior-background { inset: -14%; opacity: .1; }
 }
 
 /* Peça fotográfica: somente a imagem é o acionador do detalhe. */
@@ -228,6 +294,22 @@ html.is-loading { overflow: hidden; }
 .phase-exit .garment-pedestal { opacity: 0; transition: opacity 500ms; }
 @media (hover:hover) and (pointer:fine) {
   .garment-trigger:hover .garment-image { scale: 1.045; filter: drop-shadow(0 12px 20px #a6896355); }
+}
+.theme-victoria .garment-image { filter: drop-shadow(0 16px 18px #4b142a99); }
+.theme-victoria .garment-pedestal { background: linear-gradient(140deg,#ffd8e480,#d9547e88,#58152d99); border-color: #f19ab266; box-shadow: 0 10px 20px #3e102466; }
+.theme-victoria .garment-trigger:focus-visible .garment-image { filter: drop-shadow(0 12px 20px #ff98b9aa); }
+:is(.theme-victoria.phase-enter,.theme-victoria.phase-intro) .garment-trigger { animation-name: silk-letter; }
+.theme-victoria.phase-exit .garment-trigger { animation-name: silk-object-out; }
+@media (hover:hover) and (pointer:fine) {
+  .theme-victoria .garment-trigger:hover .garment-image { filter: drop-shadow(0 12px 24px #ff7fa9aa); }
+}
+.theme-mcqueen .garment-image { filter: drop-shadow(0 16px 18px #08080aaa); }
+.theme-mcqueen .garment-pedestal { background: linear-gradient(140deg,#cbc4be55,#772d3b88,#15151999); border-color: #b04c605c; box-shadow: 0 10px 20px #00000066; }
+.theme-mcqueen .garment-trigger:focus-visible .garment-image { filter: drop-shadow(0 12px 20px #b64c5b99); }
+:is(.theme-mcqueen.phase-enter,.theme-mcqueen.phase-intro) .garment-trigger { animation-name: vortex-letter; }
+.theme-mcqueen.phase-exit .garment-trigger { animation-name: vortex-object-out; }
+@media (hover:hover) and (pointer:fine) {
+  .theme-mcqueen .garment-trigger:hover .garment-image { filter: drop-shadow(0 12px 24px #b7465f99); }
 }
 @keyframes garment-float { 0%,100% { translate: 0 -4px; rotate: -.7deg; } 50% { translate: 0 5px; rotate: .7deg; } }
 @keyframes pedestal-breathe { 0%,100% { scale: .94 1; opacity: .7; } 50% { scale: 1.04 1; opacity: 1; } }
@@ -268,6 +350,26 @@ html.look-open { overflow: hidden; }
 .is-paused .look-dialog, .is-paused .look-dialog * { animation-play-state: running !important; }
 .look-closing .look-panel:before, .look-closing .look-information, .look-closing .look-close, .look-closing .look-arch, .look-closing .look-image-label { animation: look-away 400ms both; pointer-events: none; }
 .look-dialog.look-closing::backdrop { animation: backdrop-in 420ms reverse both; }
+.look-dialog--victoria { color: #502535; }
+.look-dialog--victoria .look-panel:before { background: #f9e7ebf7; border-color: #fff8fa; box-shadow: 0 30px 100px #4c142d45; }
+.look-dialog--victoria .look-close { border-color: #c96a8680; }
+.look-dialog--victoria .look-close:hover { background: #efafbf88; }
+.look-dialog--victoria .look-arch { border-color: #d96f8b66; }
+.look-dialog--victoria .look-image { filter: drop-shadow(0 20px 18px #7d264047); }
+.look-dialog--victoria .look-image-label,.look-dialog--victoria .look-information .eyebrow,.look-dialog--victoria .look-category,.look-dialog--victoria .look-details dt,.look-dialog--victoria .look-note { color: #9d5268; }
+.look-dialog--victoria #look-description { color: #704355; }
+.look-dialog--victoria .look-details > div { border-color: #b9627938; }
+.look-dialog--victoria .look-return { border-color: #b95b7566; }
+.look-dialog--mcqueen { color: #e5e1df; }
+.look-dialog--mcqueen .look-panel:before { background: #171519f5; border-color: #b24c5a44; box-shadow: 0 30px 100px #00000088; }
+.look-dialog--mcqueen .look-close { border-color: #d38a9666; }
+.look-dialog--mcqueen .look-close:hover { background: #9c394955; }
+.look-dialog--mcqueen .look-arch { border-color: #c55b6a52; }
+.look-dialog--mcqueen .look-image { filter: drop-shadow(0 20px 18px #00000099); }
+.look-dialog--mcqueen .look-image-label,.look-dialog--mcqueen .look-information .eyebrow,.look-dialog--mcqueen .look-category,.look-dialog--mcqueen .look-details dt,.look-dialog--mcqueen .look-note { color: #c6a2a7; }
+.look-dialog--mcqueen #look-description { color: #d0c6c5; }
+.look-dialog--mcqueen .look-details > div { border-color: #b6566540; }
+.look-dialog--mcqueen .look-return { border-color: #c866755c; }
 @keyframes look-away { to { opacity: 0; } }
 @media (max-width: 700px) {
   .look-dialog { padding: 16px; }
@@ -439,3 +541,61 @@ html.fabric-open { overflow: hidden; }
 .theme-chanel .look-arch { border-radius: 0; border-color: #d6c5a544; }
 .theme-chanel .look-close:hover { background: #d6c5a522; }
 @media (min-width:1101px) { .theme-chanel .scene-heading h1 { font-size: clamp(25px,2.5vw,48px); letter-spacing:.045em; } }
+
+/* Refinamentos de interação: cursor, transições e painéis editoriais. */
+.fashion-cursor { position: fixed; z-index: 9999; top: 0; left: 0; width: 22px; height: 22px; border: 1px solid color-mix(in srgb,var(--accent) 76%,#fff); border-radius: 50%; pointer-events: none; translate: -50% -50%; mix-blend-mode: difference; transition: width 260ms cubic-bezier(.16,1,.3,1),height 260ms cubic-bezier(.16,1,.3,1),background 260ms,opacity 180ms; }
+.fashion-cursor:after { content: ''; position: absolute; inset: 6px; border-radius: inherit; background: currentColor; opacity: .85; transition: inset 260ms,opacity 260ms; }
+html.custom-cursor .experience,html.custom-cursor .experience * { cursor: none !important; }
+html.custom-cursor dialog,html.custom-cursor dialog * { cursor: auto !important; }
+.fashion-cursor.cursor-action { width: 46px; height: 46px; background: color-mix(in srgb,var(--accent) 38%,transparent); }
+.fashion-cursor.cursor-action:after { inset: 17px; opacity: 1; }
+.fashion-cursor.cursor-down { width: 16px; height: 16px; }
+
+.phase-enter .gallery { animation: gallery-reveal 1050ms cubic-bezier(.16,1,.3,1) both; }
+.phase-exit .gallery { animation: gallery-depart 600ms cubic-bezier(.55,0,.85,.3) both; }
+:is(.phase-enter,.phase-intro) .study-garment .garment-pedestal { animation: pedestal-arrive 1100ms cubic-bezier(.16,1,.3,1) both, pedestal-breathe 6.5s 1100ms ease-in-out infinite; animation-delay: calc(var(--piece) * 95ms),calc(1100ms + var(--piece) * -1.7s); }
+.phase-exit .study-garment .garment-pedestal { animation: pedestal-depart 480ms cubic-bezier(.55,0,.85,.3) both; animation-delay: calc(var(--piece) * 50ms); }
+@keyframes gallery-reveal { from { opacity: 0; transform: translateY(28px) scale(.975); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes gallery-depart { to { opacity: 0; transform: translateY(-18px) scale(1.025); filter: blur(6px); } }
+@keyframes pedestal-arrive { from { opacity: 0; transform: scaleX(.25) translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes pedestal-depart { to { opacity: 0; transform: scaleX(.3) translateY(-8px); } }
+
+.look-dialog::backdrop,.fabric-dialog::backdrop { background: color-mix(in srgb,#101014 58%,transparent); backdrop-filter: blur(18px) saturate(.68); -webkit-backdrop-filter: blur(18px) saturate(.68); }
+.look-panel { overflow: hidden; border-radius: 2px; box-shadow: 0 40px 120px #0604074d; animation: look-panel-arrive 700ms cubic-bezier(.16,1,.3,1) both; }
+.look-panel:after { content: ''; position: absolute; inset: 10px; z-index: -1; border: 1px solid color-mix(in srgb,var(--accent) 24%,transparent); pointer-events: none; }
+.look-visual { background: radial-gradient(ellipse at 50% 48%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 66%); overflow: hidden; }
+.look-arch { transition: transform 1000ms cubic-bezier(.16,1,.3,1),opacity 700ms; }
+.look-dialog[open] .look-arch { transform: scale(1.06); }
+.look-information { position: relative; }
+.look-information:before { content: ''; display: block; width: 38px; height: 1px; margin-bottom: 22px; background: var(--accent); opacity: .7; animation: line-draw 850ms 300ms both; transform-origin: left; }
+.look-details > div { transition: padding 350ms,background 350ms; }
+.look-details > div:hover { padding-inline: 8px; background: color-mix(in srgb,var(--accent) 7%,transparent); }
+@keyframes look-panel-arrive { from { opacity: 0; transform: translateY(34px) scale(.965); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+
+.fabric-dialog { border-color: color-mix(in srgb,var(--accent) 36%,transparent); border-radius: 2px; box-shadow: 0 36px 110px #0008; }
+.fabric-sheet { overflow: hidden; isolation: isolate; }
+.fabric-sheet:before { content: ''; position: absolute; z-index: -1; inset: 0 0 auto; height: 190px; background: radial-gradient(ellipse at 20% 0,color-mix(in srgb,var(--accent) 18%,transparent),transparent 65%); }
+.fabric-sheet-heading .fabric-swatch { border-radius: 2px; box-shadow: 8px 10px 0 color-mix(in srgb,var(--accent) 12%,transparent),0 18px 35px #00000024; transform: rotate(-3deg); }
+.fabric-sheet-heading .fabric-swatch:after { animation: swatch-sheen 3.6s ease-in-out infinite; }
+.fabric-close { transition: rotate 400ms,background 350ms,border-color 350ms; }
+.fabric-close:hover { background: color-mix(in srgb,var(--accent) 14%,transparent); border-color: var(--accent); }
+.fabric-observation { max-width: 53ch; }
+.fabric-specifications > div { transition: background 300ms,padding 300ms; }
+.fabric-specifications > div:hover { padding-inline: 9px; background: color-mix(in srgb,var(--accent) 7%,transparent); }
+.fabric-return { transition: letter-spacing 350ms,color 350ms; }
+.fabric-return:hover { color: var(--accent); letter-spacing: .35px; }
+@keyframes swatch-sheen { 0%,35% { translate: -130% 0; } 65%,100% { translate: 130% 0; } }
+
+/* Amostras associadas diretamente às cores, volumes e estampas de cada look. */
+.texture-victoria-red { background-image: radial-gradient(ellipse at 25% 45%,#fff8 0 4%,transparent 5%),repeating-linear-gradient(125deg,#9d1430 0 8px,#e8304e 9px 17px,#fff1 18px 20px,#5f1024 21px 28px); }
+.texture-victoria-pink { background-image: radial-gradient(circle at 20% 24%,#fff 0 10%,transparent 11%),radial-gradient(circle at 74% 70%,#fff 0 13%,transparent 14%),repeating-linear-gradient(135deg,#f7649b 0 10px,#ffb0c7 11px 18px,#fff3 19px 24px); }
+.texture-victoria-candy { background-image: radial-gradient(circle at 18% 20%,#f8d584 0 9%,transparent 10%),radial-gradient(circle at 70% 24%,#9ad8e9 0 11%,transparent 12%),radial-gradient(circle at 30% 72%,#f287b7 0 13%,transparent 14%),radial-gradient(circle at 76% 76%,#9dd7a3 0 10%,transparent 11%),repeating-linear-gradient(90deg,#f4b9cb 0 7px,#d6edf0 8px 14px,#fff0ba 15px 21px); }
+.texture-mcqueen-rose { background-image: radial-gradient(ellipse at 24% 66%,#e8324e 0 13%,transparent 14%),radial-gradient(ellipse at 68% 28%,#b40f2d 0 18%,transparent 19%),repeating-conic-gradient(from 35deg at 50% 50%,#120d13 0 12deg,#8f112b 13deg 25deg,#da2944 26deg 38deg,#160d13 39deg 52deg); }
+.texture-mcqueen-gold { background-image: repeating-linear-gradient(14deg,transparent 0 3px,#f7df9d88 4px 5px,transparent 6px 8px),repeating-linear-gradient(104deg,#43352455 0 2px,transparent 3px 7px),linear-gradient(135deg,#675132,#d8bc77,#80663e); }
+.texture-mcqueen-houndstooth { background-image: conic-gradient(from 45deg at 50% 50%,#eee9e5 0 25%,#222126 0 50%,#eee9e5 0 75%,#222126 0) 0 0/16px 16px; }
+
+@media (max-width: 700px) {
+  .look-panel:after { inset: 7px; }
+  .look-information:before { margin-bottom: 15px; }
+}
+@media (hover: none),(pointer: coarse) { .fashion-cursor { display: none; } }

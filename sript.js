@@ -10,6 +10,32 @@ const brands = [
   { id: 'mcqueen', name: 'Alexander McQueen', chapter: 'A beautiful darkness', subtitle: 'Na fronteira entre beleza e vertigem.', note: 'Espinho. Metal. Instinto.', collection: '04 — Metamorfose', pieces: ['Natureza indomável', 'Memória de uma asa', 'A forma do instinto'] },
 ];
 const garments = {
+  victoria: {
+    0: {
+      id: 'victoria-01', brand: 'Victoria’s Secret', title: 'Anjo em vermelho', image: './assets/roupaVS1.png',
+      alt: 'Modelo com lingerie branca e vermelha, asas vermelhas, saia curta com acabamento felpudo e botas vermelhas.',
+      category: 'Look fantasia · Look 01',
+      description: 'Lingerie em branco e vermelho encontra asas esculturais de plumas vermelhas. A saia curta e as botas de cano alto, ambas com acabamento felpudo, dão ao look uma leitura lúdica e teatral.',
+      details: [['Cores', 'Vermelho, branco e detalhes prateados'], ['Silhueta', 'Lingerie com saia curta e asas amplas'], ['Detalhes visuais', 'Asas vermelhas, acabamentos felpudos e aplicações brilhantes'], ['Styling', 'Botas vermelhas de cano alto']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+    1: {
+      id: 'victoria-02', brand: 'Victoria’s Secret', title: 'Fantasia em rosa', image: './assets/roupaVS2.png',
+      alt: 'Modelo com lingerie rosa, capuz branco felpudo, capa rosa e acessórios de pompons.',
+      category: 'Look fantasia · Look 02',
+      description: 'O rosa vivo da lingerie e da capa contrasta com o capuz e os acabamentos em branco felpudo. Pompons, laços e uma aplicação brilhante no quadril tornam a composição suave, divertida e cenográfica.',
+      details: [['Cores', 'Rosa, branco e prata'], ['Silhueta', 'Lingerie com capa curta e capuz'], ['Detalhes visuais', 'Acabamentos felpudos, pompons, laços e aplicação brilhante'], ['Styling', 'Sandálias rosa com detalhe felpudo']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+    2: {
+      id: 'victoria-03', brand: 'Victoria’s Secret', title: 'Nuvem de pompons', image: './assets/roupaVS3.png',
+      alt: 'Modelo com lingerie listrada multicolorida e adorno de pompons coloridos ao redor do corpo.',
+      category: 'Look fantasia · Look 03',
+      description: 'A lingerie listrada em cores suaves recebe aplicações brilhantes e é envolvida por uma profusão de pompons em tons pastel. A composição constrói uma silhueta leve, colorida e festiva.',
+      details: [['Cores', 'Rosa, azul, verde, amarelo e tons pastel'], ['Silhueta', 'Lingerie com adorno volumoso ao redor do corpo'], ['Detalhes visuais', 'Listras multicoloridas, aplicações brilhantes e pompons'], ['Styling', 'Sandálias metalizadas com detalhes coloridos']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+  },
   chanel: [
   {
     "id": "channel-02",
@@ -122,13 +148,39 @@ const garments = {
       note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
     },
   },
+  mcqueen: {
+    0: {
+      id: 'mcqueen-01', brand: 'Alexander McQueen', title: 'Pétalas em vermelho', image: './assets/roupaAM1.png',
+      alt: 'Modelo com vestido vermelho e preto de volumes esculturais e camadas de babados.',
+      category: 'Vestido escultural · Look 01',
+      description: 'Volumes em vermelho intenso e preto se desdobram do busto à saia em camadas orgânicas. A construção cria uma silhueta dramática, com movimento e contraste entre luz e sombra.',
+      details: [['Cores', 'Vermelho intenso e preto'], ['Silhueta', 'Ombros ampliados e saia longa em camadas'], ['Detalhes visuais', 'Babados esculturais, drapeados e volumes assimétricos'], ['Styling', 'Sandálias escuras de tiras finas']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+    1: {
+      id: 'mcqueen-02', brand: 'Alexander McQueen', title: 'Armadura em ouro', image: './assets/roupaAM2.png',
+      alt: 'Modelo com conjunto dourado texturizado, cinto escuro e grande adorno escultórico na cabeça.',
+      category: 'Conjunto texturizado · Look 02',
+      description: 'A textura dourada percorre o casaco de corte preciso e a calça ajustada. O cinto escuro marca a cintura, enquanto o adorno de grandes volumes na cabeça transforma a composição em uma presença ritualística.',
+      details: [['Cores', 'Dourado, bege e marrom escuro'], ['Silhueta', 'Casaco acinturado e calça ajustada'], ['Detalhes visuais', 'Textura densa, lapelas marcadas e cinto com fivela'], ['Styling', 'Adorno escultural na cabeça e botas douradas']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+    2: {
+      id: 'mcqueen-03', brand: 'Alexander McQueen', title: 'Código pied-de-poule', image: './assets/roupaAM3.png',
+      alt: 'Modelo com casaco preto e branco pied-de-poule, luvas pretas, botas estampadas e chapéu volumoso.',
+      category: 'Casaco gráfico · Look 03',
+      description: 'O padrão pied-de-poule em preto e branco constrói um casaco de cintura marcada e saia ampla. Luvas pretas, botas gráficas e o chapéu volumoso acentuam o contraste e a teatralidade do look.',
+      details: [['Cores', 'Preto, branco e vermelho'], ['Silhueta', 'Cintura marcada e saia ampla'], ['Detalhes visuais', 'Pied-de-poule, gola alta e estrutura acinturada'], ['Styling', 'Luvas pretas, botas estampadas e chapéu volumoso']],
+      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
+    },
+  },
 };
 // Amostras gráficas representam aparência, não composição têxtil certificada.
 const fabricStudies = {
   victoria: [
-    { name: 'Luz rosada', texture: 'satin', color: '#b96987', observation: 'Referência gráfica de brilho e dobras em rosa. Ainda não há fotografia ou ficha técnica vinculada.' },
-    { name: 'Trama noturna', texture: 'mesh', color: '#392029', observation: 'Referência gráfica de uma trama aberta em tom escuro; não representa um tecido identificado.' },
-    { name: 'Reflexos rubi', texture: 'sparkle', color: '#8c263e', observation: 'Estudo gráfico de reflexos rubi inspirado na atmosfera da cena.' },
+    { name: 'Asas em vermelho', texture: 'victoria-red', color: '#c72f49', observation: 'A amostra traduz o vermelho intenso, os reflexos acetinados e o acabamento claro vistos no primeiro look.' },
+    { name: 'Pluma em rosa', texture: 'victoria-pink', color: '#e8669b', observation: 'Referência visual ao rosa vibrante, ao acabamento branco felpudo e aos pequenos laços do segundo look.' },
+    { name: 'Pompons pastel', texture: 'victoria-candy', color: '#e9a9b7', observation: 'Amostra inspirada na combinação de listras suaves, aplicações brilhantes e pompons coloridos do terceiro look.' },
   ],
   dior: [
     { name: 'Xadrez verde', texture: 'check', color: '#31473d', observation: 'Na fotografia do conjunto, observa-se um padrão xadrez miúdo em verde escuro e linhas claras. A fibra e o ligamento não podem ser determinados pela imagem.' },
@@ -156,9 +208,9 @@ const fabricStudies = {
   }
 ],
   mcqueen: [
-    { name: 'Sombra orgânica', texture: 'mesh', color: '#252329', observation: 'Trama gráfica escura inspirada nas formas orgânicas da cena, sem tecido real associado.' },
-    { name: 'Reflexo mineral', texture: 'metal', color: '#9397a0', observation: 'Referência gráfica de reflexos metálicos; não indica a presença de fibras ou fios metálicos em uma roupa.' },
-    { name: 'Vermelho profundo', texture: 'pleat', color: '#702c39', observation: 'Estudo de dobras e cor inspirado na direção artística da cena.' },
+    { name: 'Pétalas em sombra', texture: 'mcqueen-rose', color: '#851d2f', observation: 'Amostra gráfica de vermelho profundo e preto, inspirada nos volumes florais do primeiro look.' },
+    { name: 'Trama dourada', texture: 'mcqueen-gold', color: '#a89163', observation: 'Referência à superfície dourada texturizada e ao contraste do cinto escuro no segundo look.' },
+    { name: 'Pied-de-poule', texture: 'mcqueen-houndstooth', color: '#3b393d', observation: 'Amostra em preto e branco inspirada no padrão gráfico do casaco do terceiro look.' },
   ],
 };
 const textileFields = ['Composição / fibras', 'Estrutura / ligamento', 'Gramatura (g/m²)', 'Espessura', 'Elasticidade', 'Acabamento / tratamento', 'Forro', 'Fabricante / origem', 'Cuidados de conservação'];
@@ -196,7 +248,7 @@ function FabricDialog({ selection, onDismiss }) {
     if(matchMedia('(prefers-reduced-motion: reduce)').matches)onDismiss();
     else timer.current=setTimeout(onDismiss,300);
   };
-  return h('dialog',{ref,className:'fabric-dialog'+(exit?' fabric-closing':''),'aria-labelledby':'fabric-title','aria-describedby':'fabric-disclaimer',
+  return h('dialog',{ref,className:'fabric-dialog fabric-dialog--'+brand.id+(exit?' fabric-closing':''),'aria-labelledby':'fabric-title','aria-describedby':'fabric-disclaimer',
     onCancel:(event)=>{event.preventDefault();close();},onClick:(event)=>{if(event.target===event.currentTarget)close();}},
     h('article',{className:'fabric-sheet'},
       h('button',{className:'fabric-close',onClick:close,'aria-label':'Fechar ficha têxtil',autoFocus:true},'×'),
@@ -389,7 +441,7 @@ function LookDialog({ selection, onDismiss }) {
     timer.current = setTimeout(onDismiss, 430);
   };
   return h('dialog', {
-    ref: dialog, className: 'look-dialog' + (isClosing ? ' look-closing' : ''),
+    ref: dialog, className: 'look-dialog look-dialog--' + item.id.split('-')[0] + (isClosing ? ' look-closing' : ''),
     'aria-labelledby': 'look-title', 'aria-describedby': 'look-description',
     onCancel: (event) => { event.preventDefault();close(); },
     onClick: (event) => { if (event.target === event.currentTarget) close(); },
@@ -407,6 +459,34 @@ function LookDialog({ selection, onDismiss }) {
       h('dl', { className: 'look-details' }, ...item.details.map(([label,value]) => h('div', { key: label }, h('dt', null, label), h('dd', null, value)))),
       h('p', { className: 'look-note' }, item.note),
       h('button', { className: 'look-return', onClick: close }, 'Voltar à galeria', h('span', { 'aria-hidden': true }, '↗')))));
+}
+
+function FashionCursor() {
+  const cursor = useRef(null);
+  useEffect(() => {
+    const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+    if (!finePointer.matches) return undefined;
+    const root = document.documentElement;
+    root.classList.add('custom-cursor');
+    const move = (event) => {
+      const node = cursor.current;
+      if (!node) return;
+      node.style.transform = `translate3d(${event.clientX}px,${event.clientY}px,0)`;
+      node.classList.toggle('cursor-action', Boolean(event.target.closest('button,a,.garment-trigger')));
+    };
+    const down = () => cursor.current?.classList.add('cursor-down');
+    const up = () => cursor.current?.classList.remove('cursor-down');
+    window.addEventListener('pointermove', move, { passive: true });
+    window.addEventListener('pointerdown', down, { passive: true });
+    window.addEventListener('pointerup', up, { passive: true });
+    return () => {
+      root.classList.remove('custom-cursor');
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerdown', down);
+      window.removeEventListener('pointerup', up);
+    };
+  }, []);
+  return h('span', { ref: cursor, className: 'fashion-cursor', 'aria-hidden': true });
 }
 
 function App() {
@@ -440,6 +520,10 @@ function App() {
     else if (dialog.current.open) dialog.current.close();
   }, [about]);
   return h(React.Fragment, null, h(LoadingScreen, { loading }), h('main', { inert: loading.phase !== 'done', className: `experience theme-${brand.id}${loading.phase !== 'loading' ? ' ui-ready' : ''}${paused ? ' is-paused' : ''}` },
+    h(FashionCursor),
+    brand.id === 'victoria' && h('div', { className: 'victoria-background', 'aria-hidden': true }),
+    brand.id === 'dior' && h('div', { className: 'dior-background', 'aria-hidden': true }),
+    brand.id === 'mcqueen' && h('div', { className: 'mcqueen-background', 'aria-hidden': true }),
     h('div', { className: 'ambient', 'aria-hidden': true }),
     h(BackgroundCanvas, { id: brand.id, phase, paused }),
     h('header', { className: 'header' },
