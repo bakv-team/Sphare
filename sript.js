@@ -2,6 +2,48 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { createRoot } from 'https://esm.sh/react-dom@19.1.0/client';
 
 const h = React.createElement;
+// GSAP is optional: CSS remains available if the CDN cannot be reached.
+const motionLibrary = import('https://esm.sh/gsap@3.13.0')
+  .then((module) => module.gsap)
+  .catch(() => null);
+
+function useSceneMotion(ref, brandId, phase, direction, paused) {
+  const timeline = useRef(null);
+  const isPaused = useRef(paused);
+  isPaused.current = paused;
+  useEffect(() => { timeline.current?.paused(paused); }, [paused]);
+  useLayoutEffect(() => {
+    let disposed = false;
+    let context;
+    let media;
+    const node = ref.current;
+    motionLibrary.then((gsap) => {
+      if (!gsap || disposed || !node || !['intro', 'enter', 'exit'].includes(phase)) return;
+      media = gsap.matchMedia();
+      media.add('(prefers-reduced-motion: no-preference)', () => {
+        node.classList.add('gsap-scene');
+        context = gsap.context(() => {
+          const leaving = phase === 'exit';
+          const titles = node.querySelectorAll('.title-letter');
+          const models = node.querySelectorAll('.garment-trigger');
+          const tl = gsap.timeline({ paused: isPaused.current, defaults: { ease: 'power3.out' } });
+          timeline.current = tl;
+          if (leaving) {
+            tl.to(titles, { opacity: 0, y: -16, duration: .28, stagger: .012 }, 0)
+              .to(models, { opacity: 0, x: -direction * 28, duration: .42, stagger: .06 }, .06);
+          } else {
+            tl.fromTo(titles, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .7, stagger: .018 }, 0)
+              .fromTo(models, { opacity: 0, x: direction * 32, y: 18 },
+                { opacity: 1, x: 0, y: 0, duration: .95, stagger: .1 }, .12);
+          }
+        }, node);
+        return () => { context?.revert(); node.classList.remove('gsap-scene'); timeline.current = null; };
+      });
+    });
+    return () => { disposed = true; media?.revert(); };
+  }, [brandId, phase, direction]);
+}
+
 // Cada maison concentra sua direção artística aqui. Assets serão adicionados na última etapa.
 const brands = [
   { id: 'dior', name: 'Dior', chapter: 'The architecture of grace', subtitle: 'A delicadeza tem sua própria arquitetura.', note: 'Forma. Jardim. Silêncio.', collection: '01 — Essência', pieces: ['Arquitetura do tecido', 'Jardim suspenso', 'Um estudo em ouro'] },
@@ -255,16 +297,15 @@ function useLoadingScreen() {
     return () => { live = false; clearTimeout(timeout); };
   }, []);
   useEffect(() => {
-    if (!fonts || world === 'pending') return;
-    const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : Math.max(0, 1100 - (performance.now() - started.current));
-    const timer = setTimeout(() => setPhase('leaving'), delay);
-    return () => clearTimeout(timer);
-  }, [fonts, world]);
-  useEffect(() => {
-    if (phase !== 'leaving') return;
-    const timer = setTimeout(() => { setPhase('done'); document.documentElement.classList.remove('is-loading'); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 850);
-    return () => clearTimeout(timer);
-  }, [phase]);
+    const remaining = Math.max(0, 3000 - (performance.now() - started.current));
+    const exitDuration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 850;
+    const leaving = setTimeout(() => setPhase('leaving'), Math.max(0, remaining - exitDuration));
+    const done = setTimeout(() => {
+      setPhase('done');
+      document.documentElement.classList.remove('is-loading');
+    }, remaining);
+    return () => { clearTimeout(leaving); clearTimeout(done); };
+  }, []);
   return { phase, fonts, world, settleWorld, completed: 1 + Number(fonts) + Number(world !== 'pending') };
 }
 
@@ -343,9 +384,11 @@ function GarmentStudy({ title, index, garment, phase, onOpen }) {
 }
 
 function Scene({ brand, phase, direction, paused, onSettled, onOpen, onFabric }) {
+  const sceneRef = useRef(null);
+  useSceneMotion(sceneRef, brand.id, phase, direction, paused);
   const [ready, setReady] = useState(false);
   const handleReady = useCallback((value) => { setReady(value); onSettled(value); }, [onSettled]);
-  return h('section', { className: 'scene phase-' + phase, 'aria-labelledby': 'brand-title', style: { '--exit-duration': transitionProfiles[brand.id].exit + 'ms', '--enter-duration': transitionProfiles[brand.id].enter + 'ms', '--direction': direction } },
+  return h('section', { ref: sceneRef, className: 'scene phase-' + phase, 'aria-labelledby': 'brand-title', style: { '--exit-duration': transitionProfiles[brand.id].exit + 'ms', '--enter-duration': transitionProfiles[brand.id].enter + 'ms', '--direction': direction } },
     h(TransitionVeil, { brand, phase }),
     h('div', { className: 'scene-heading' },
       h('p', { className: 'eyebrow' }, brand.chapter),
@@ -480,7 +523,7 @@ function App() {
     h(BackgroundCanvas, { id: brand.id, phase, paused }),
     h('header', { className: 'header' },
       h('a', { className: 'wordmark', href: './', 'aria-label': 'Sphare, início' }, 'sphare', h('span', null, '®')),
-      h('p', { className: 'header-caption' }, 'An independent fashion study'),
+      h('p', { className: 'header-caption' }, 'Desenvolvido por BKV'),
       h('button', { className: 'about-button', onClick: () => setAbout(true) }, 'Sobre o projeto', h('span', { 'aria-hidden': true }, '↗'))),
     h('div', { className: 'exhibition-line' }, h('span', null, 'Digital couture gallery'), h('span', null, 'Volume 001 — Além da forma')),
     h('div', { className: 'scene-stage', onPointerDown: (event) => { if (!event.isPrimary || event.button !== 0) return; if (!event.target.closest('.garment-trigger')) event.currentTarget.setPointerCapture(event.pointerId); start.current = { x: event.clientX, y: event.clientY }; }, onPointerCancel: () => { start.current = null; }, onPointerUp: (event) => {
@@ -592,25 +635,30 @@ function createWorld(THREE, id, compact) {
       if (!garments[id]?.[index]) mesh(sculpture, new THREE.IcosahedronGeometry(.13, 1));
       ring(sculpture, 1.22, 1.1);
     } else if (id === 'chanel') {
-      const frameGeometry = new THREE.BoxGeometry(1.5, 2.1, .22);
-      const frame = new THREE.LineSegments(new THREE.EdgesGeometry(frameGeometry), lineMaterial);
-      frameGeometry.dispose();
-      frame.userData.motion = 'frame';
-      sculpture.add(frame);
-      frame.rotation.z = -.18 + index * .18;
-      const beadGeometry = new THREE.SphereGeometry(.095, compact ? 10 : 16, 10);
-      for (let i = 0; i < (garments[id]?.[index] ? 0 : 22); i++) {
-        const angle = i / 22 * Math.PI * 2;
-        const bead = mesh(sculpture, beadGeometry, pearl);
-        bead.userData.motion = 'pearl';
-        bead.position.set(Math.cos(angle) * .77, Math.sin(angle) * 1.13, Math.sin(angle * 2) * .25);
+      // Perolas encostadas formam uma pulseira; o conjunto gira como uma joia.
+      const nacre = new THREE.MeshPhysicalMaterial({
+        color: 0xf5eee5, metalness: 0, roughness: .27,
+        ior: 1.53, specularIntensity: 1,
+        clearcoat: .85, clearcoatRoughness: .2,
+        iridescence: .28, iridescenceIOR: 1.3,
+        iridescenceThicknessRange: [260, 340], envMapIntensity: .85,
+      });
+      const bracelet = new THREE.Group();
+      bracelet.position.set(0, .08, -.45);
+      bracelet.rotation.set(.34 + index * .08, (index - 1) * .32, (index - 1) * .2);
+      bracelet.userData.motion = 'nacre';
+      sculpture.add(bracelet);
+      const beadCount = 24;
+      const radius = 1.24;
+      const beadGeometry = new THREE.SphereGeometry(.163, compact ? 20 : 32, compact ? 14 : 24);
+      for (let i = 0; i < beadCount; i++) {
+        const angle = i / beadCount * Math.PI * 2;
+        const bead = mesh(bracelet, beadGeometry, nacre);
+        bead.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+        const variation = 1 + Math.sin(i * 2.7 + index) * .025;
+        bead.scale.set(variation, variation * (1 + Math.cos(i * 1.9) * .025), variation);
+        bead.rotation.set(i * .7, i * .43, angle);
       }
-      if (!garments[id]?.[index]) {
-      const seal = mesh(sculpture, new THREE.TorusGeometry(.36, .075, 10, 36));
-      seal.userData.motion = 'seal';
-      seal.rotation.x = .35;
-      }
-      ring(sculpture, 1.43, .6);
     } else {
       const bone = mesh(sculpture, new THREE.TorusKnotGeometry(.55, .055, compact ? 56 : 100, 8, 2, 3), pearl);
       bone.userData.motion = 'bone';
@@ -675,6 +723,10 @@ function animateDetail(child, drift, hover, travel, reduced) {
   } else if (motion === 'petal') {
     child.rotation.x += wave * .2 + hover * .35;
     child.position.multiplyScalar(1 + hover * .27 + Math.abs(travel) * .4);
+  } else if (motion === 'nacre') {
+    child.rotation.y += Math.sin(drift * .24 + rest.seed) * .18;
+    child.rotation.z += Math.sin(drift * .18 + rest.seed) * .055;
+    child.position.y += wave * .045;
   } else if (motion === 'pearl') {
     child.position.z += wave * .13 + hover * Math.cos(rest.seed) * .18;
     child.scale.multiplyScalar(1 + wave * .055);
@@ -692,6 +744,36 @@ function animateDetail(child, drift, hover, travel, reduced) {
     child.rotation.y += Math.sin(drift * .4 + rest.seed) * .13;
   } else {
     child.position.y += wave * .015;
+  }
+}
+
+// Softboxes refletidas nas perolas, sem baixar texturas externas.
+function createPearlStudio(THREE, renderer) {
+  const studio = new THREE.Scene();
+  studio.background = new THREE.Color(0x303139);
+  const panelGeometry = new THREE.PlaneGeometry(1, 1);
+  const panels = [
+    { position: [-3, 4, 5], size: [3, 5], color: 0xfff4e6, intensity: 3 },
+    { position: [4, 1, 3], size: [1.2, 5], color: 0xdfeaff, intensity: 2.2 },
+    { position: [0, 5, -2], size: [4, 2], color: 0xffffff, intensity: 2.5 },
+    { position: [-4, -1, -3], size: [2, 3], color: 0xf3dce8, intensity: 1.2 },
+  ];
+  panels.forEach(({ position, size, color, intensity }) => {
+    const material = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(color).multiplyScalar(intensity), side: THREE.DoubleSide,
+    });
+    const panel = new THREE.Mesh(panelGeometry, material);
+    panel.position.set(...position);
+    panel.scale.set(size[0], size[1], 1);
+    panel.lookAt(0, 0, 0);
+    studio.add(panel);
+  });
+  const generator = new THREE.PMREMGenerator(renderer);
+  try {
+    return generator.fromScene(studio, .035, .1, 30);
+  } finally {
+    generator.dispose();
+    disposeWorld(studio);
   }
 }
 
@@ -725,6 +807,7 @@ function createStage(THREE, host, getState, onReady) {
   const gallery = host.parentElement;
   let world;
   let currentId;
+  let pearlStudio;
   let width = 1;
   let height = 1;
   let frame = 0;
@@ -773,6 +856,10 @@ function createStage(THREE, host, getState, onReady) {
       if (world) disposeWorld(world.group);
       world = createWorld(THREE, state.id, compact);
       currentId = state.id;
+      if (state.id === 'chanel' && !pearlStudio) pearlStudio = createPearlStudio(THREE, renderer);
+      scene.environment = state.id === 'chanel' ? pearlStudio.texture : null;
+      key.intensity = state.id === 'chanel' ? 2.2 : 4;
+      renderer.toneMappingExposure = state.id === 'chanel' ? 1.05 : 1.4;
       measure();
       scene.add(world.group);
       scene.fog = new THREE.FogExp2(world.palette.fog, .035);
@@ -794,9 +881,10 @@ function createStage(THREE, host, getState, onReady) {
     const smoothing = 1 - Math.exp(-dt * 4.5);
     const parallaxX = motion.matches || state.paused ? 0 : pointer.x;
     const parallaxY = motion.matches || state.paused ? 0 : pointer.y;
-    camera.position.x += (parallaxX * .2 - camera.position.x) * smoothing;
-    camera.position.y += (-parallaxY * .1 - camera.position.y) * smoothing;
-    camera.position.z = 8 - Math.abs(travel) * (state.id === 'dior' ? 1.2 : .65);
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, parallaxX * .16, 3.5, dt);
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, -parallaxY * .08, 3.5, dt);
+    const cameraDepth = 8 - Math.abs(travel) * (state.id === 'dior' ? .8 : .45);
+    camera.position.z = motion.matches ? 8 : THREE.MathUtils.damp(camera.position.z, cameraDepth, 4, dt);
     camera.lookAt(0, 0, 0);
     camera.rotation.z = state.id === 'mcqueen' ? travel * state.direction * .09 : 0;
     // As posições acompanham os centros das figuras HTML, inclusive após redimensionamento.
@@ -894,6 +982,7 @@ function createStage(THREE, host, getState, onReady) {
       motion.removeEventListener('change', changeMotion);
       renderer.domElement.removeEventListener('webglcontextlost', lost);
       if (world) disposeWorld(world.group);
+      pearlStudio?.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
       renderer.domElement.remove();
