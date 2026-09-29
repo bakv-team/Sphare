@@ -1,45 +1,18 @@
-﻿import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'https://esm.sh/react@19.1.0';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'https://esm.sh/react@19.1.0';
 import { createRoot } from 'https://esm.sh/react-dom@19.1.0/client';
 
 const h = React.createElement;
 // Cada maison concentra sua direção artística aqui. Assets serão adicionados na última etapa.
 const brands = [
-  { id: 'victoria', name: 'Victoria’s Secret', chapter: 'The art of fantasy', subtitle: 'Entre o sonho e o espetáculo.', note: 'Seda. Luz. Liberdade.', collection: '01 — Fantasia', pieces: ['Seda em suspensão', 'Um gesto de luz', 'Anatomia de uma asa'] },
-  { id: 'dior', name: 'Dior', chapter: 'The architecture of grace', subtitle: 'A delicadeza tem sua própria arquitetura.', note: 'Forma. Jardim. Silêncio.', collection: '02 — Essência', pieces: ['Arquitetura do tecido', 'Jardim suspenso', 'Um estudo em ouro'] },
-  { id: 'chanel', name: 'Channel', chapter: 'Beyond the timeless', subtitle: 'O tempo passa. A linguagem permanece.', note: 'Pérola. Ritmo. Contraste.', collection: '03 — Permanência', pieces: ['Geometria do tweed', 'Ritmo de pérolas', 'Camélia abstrata'] },
-  { id: 'mcqueen', name: 'Alexander McQueen', chapter: 'A beautiful darkness', subtitle: 'Na fronteira entre beleza e vertigem.', note: 'Espinho. Metal. Instinto.', collection: '04 — Metamorfose', pieces: ['Natureza indomável', 'Memória de uma asa', 'A forma do instinto'] },
+  { id: 'dior', name: 'Dior', chapter: 'The architecture of grace', subtitle: 'A delicadeza tem sua própria arquitetura.', note: 'Forma. Jardim. Silêncio.', collection: '01 — Essência', pieces: ['Arquitetura do tecido', 'Jardim suspenso', 'Um estudo em ouro'] },
+  { id: 'chanel', name: 'chanel', chapter: 'Beyond the timeless', subtitle: 'O tempo passa. A linguagem permanece.', note: 'Pérola. Ritmo. Contraste.', collection: '02 — Permanência', pieces: ['Geometria do tweed', 'Ritmo de pérolas', 'Camélia abstrata'] },
+  { id: 'mcqueen', name: 'Alexander McQueen', chapter: 'A beautiful darkness', subtitle: 'Na fronteira entre beleza e vertigem.', note: 'Espinho. Metal. Instinto.', collection: '03 — Metamorfose', pieces: ['Natureza indomável', 'Memória de uma asa', 'A forma do instinto'] },
 ];
 const garments = {
-  victoria: {
-    0: {
-      id: 'victoria-01', brand: 'Victoria’s Secret', title: 'Anjo em vermelho', image: './assets/roupaVS1.png',
-      alt: 'Modelo com lingerie branca e vermelha, asas vermelhas, saia curta com acabamento felpudo e botas vermelhas.',
-      category: 'Look fantasia · Look 01',
-      description: 'Lingerie em branco e vermelho encontra asas esculturais de plumas vermelhas. A saia curta e as botas de cano alto, ambas com acabamento felpudo, dão ao look uma leitura lúdica e teatral.',
-      details: [['Cores', 'Vermelho, branco e detalhes prateados'], ['Silhueta', 'Lingerie com saia curta e asas amplas'], ['Detalhes visuais', 'Asas vermelhas, acabamentos felpudos e aplicações brilhantes'], ['Styling', 'Botas vermelhas de cano alto']],
-      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
-    },
-    1: {
-      id: 'victoria-02', brand: 'Victoria’s Secret', title: 'Fantasia em rosa', image: './assets/roupaVS2.png',
-      alt: 'Modelo com lingerie rosa, capuz branco felpudo, capa rosa e acessórios de pompons.',
-      category: 'Look fantasia · Look 02',
-      description: 'O rosa vivo da lingerie e da capa contrasta com o capuz e os acabamentos em branco felpudo. Pompons, laços e uma aplicação brilhante no quadril tornam a composição suave, divertida e cenográfica.',
-      details: [['Cores', 'Rosa, branco e prata'], ['Silhueta', 'Lingerie com capa curta e capuz'], ['Detalhes visuais', 'Acabamentos felpudos, pompons, laços e aplicação brilhante'], ['Styling', 'Sandálias rosa com detalhe felpudo']],
-      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
-    },
-    2: {
-      id: 'victoria-03', brand: 'Victoria’s Secret', title: 'Nuvem de pompons', image: './assets/roupaVS3.png',
-      alt: 'Modelo com lingerie listrada multicolorida e adorno de pompons coloridos ao redor do corpo.',
-      category: 'Look fantasia · Look 03',
-      description: 'A lingerie listrada em cores suaves recebe aplicações brilhantes e é envolvida por uma profusão de pompons em tons pastel. A composição constrói uma silhueta leve, colorida e festiva.',
-      details: [['Cores', 'Rosa, azul, verde, amarelo e tons pastel'], ['Silhueta', 'Lingerie com adorno volumoso ao redor do corpo'], ['Detalhes visuais', 'Listras multicoloridas, aplicações brilhantes e pompons'], ['Styling', 'Sandálias metalizadas com detalhes coloridos']],
-      note: 'Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados.',
-    },
-  },
   chanel: [
   {
-    "id": "channel-02",
-    "brand": "Channel",
+    "id": "chanel-02",
+    "brand": "Chanel",
     "title": "Trama em vermelho",
     "image": "./assets/roupachannel2.png",
     "alt": "Modelo com conjunto vermelho de textura entrelaçada, acabamentos claros, chapéu, luvas e bolsa coordenados.",
@@ -66,8 +39,8 @@ const garments = {
     "note": "Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados."
   },
   {
-    "id": "channel-01",
-    "brand": "Channel",
+    "id": "chanel-01",
+    "brand": "Chanel",
     "title": "Traços em movimento",
     "image": "./assets/roupachannel1.png",
     "alt": "Modelo com blusa clara de mangas longas e linhas verticais, acompanhada de saia longa estampada em vermelho, preto e tons claros.",
@@ -94,8 +67,8 @@ const garments = {
     "note": "Descrição visual da imagem fornecida. Coleção, ano e composição têxtil não informados."
   },
   {
-    "id": "channel-03",
-    "brand": "Channel",
+    "id": "chanel-03",
+    "brand": "Chanel",
     "title": "Ritmo em rosa",
     "image": "./assets/roupachannel3.png",
     "alt": "Modelo com conjunto rosa de textura multicolorida, casaco de bolsos, saia longa com botões e botas pretas.",
@@ -177,11 +150,6 @@ const garments = {
 };
 // Amostras gráficas representam aparência, não composição têxtil certificada.
 const fabricStudies = {
-  victoria: [
-    { name: 'Asas em vermelho', texture: 'victoria-red', color: '#c72f49', observation: 'A amostra traduz o vermelho intenso, os reflexos acetinados e o acabamento claro vistos no primeiro look.' },
-    { name: 'Pluma em rosa', texture: 'victoria-pink', color: '#e8669b', observation: 'Referência visual ao rosa vibrante, ao acabamento branco felpudo e aos pequenos laços do segundo look.' },
-    { name: 'Pompons pastel', texture: 'victoria-candy', color: '#e9a9b7', observation: 'Amostra inspirada na combinação de listras suaves, aplicações brilhantes e pompons coloridos do terceiro look.' },
-  ],
   dior: [
     { name: 'Xadrez verde', texture: 'check', color: '#31473d', observation: 'Na fotografia do conjunto, observa-se um padrão xadrez miúdo em verde escuro e linhas claras. A fibra e o ligamento não podem ser determinados pela imagem.' },
     { name: 'Plissado rosa', texture: 'pleat', color: '#dcb2bb', observation: 'Na fotografia do vestido, observam-se pregas finas, drapeados e volume no busto, em rosa-claro. O aspecto visual não confirma a composição do tecido.' },
@@ -394,7 +362,7 @@ function Scene({ brand, phase, direction, paused, onSettled, onOpen, onFabric })
 
 function Navigation({ active, select, navigate, busy }) {
   return h('footer', { className: 'navigation' },
-    h('div', { className: 'position', 'aria-label': `Universo ${active + 1} de 4` }, h('span', { key: active, className: 'position-current' }, number(active + 1)), h('span', { className: 'position-line' }), h('span', null, '04')),
+    h('div', { className: 'position', 'aria-label': `Universo ${active + 1} de ${brands.length}` }, h('span', { key: active, className: 'position-current' }, number(active + 1)), h('span', { className: 'position-line' }), h('span', null, number(brands.length))),
     h('nav', { className: 'brand-nav', 'aria-label': 'Universos da galeria', 'aria-busy': busy }, ...brands.map((brand, index) =>
       h('button', { key: brand.id, style: { '--nav': index }, 'aria-disabled': busy, onClick: () => select(index), 'aria-current': active === index ? 'page' : undefined }, h('span', { className: 'nav-index' }, number(index + 1)), brand.name))),
     h('div', { className: 'arrows' },
@@ -403,27 +371,17 @@ function Navigation({ active, select, navigate, busy }) {
 }
 
 function LookDialog({ selection, onDismiss }) {
-  const dialog = useRef(null), expandedImage = useRef(null);
-  const animation = useRef(null), closing = useRef(false), timer = useRef(null);
+  const dialog = useRef(null);
+  const closing = useRef(false), timer = useRef(null);
   const [isClosing, setIsClosing] = useState(false);
   const { item, source: trigger } = selection;
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const originTransform = () => {
-    const from = trigger.querySelector('img').getBoundingClientRect();
-    const to = expandedImage.current.getBoundingClientRect();
-    return 'translate(' + (from.left - to.left) + 'px,' + (from.top - to.top) + 'px) scale(' + (from.width / Math.max(1,to.width)) + ',' + (from.height / Math.max(1,to.height)) + ')';
-  };
   useLayoutEffect(() => {
     const element = dialog.current;
     element.showModal();
     document.documentElement.classList.add('look-open');
-    if (!reduced()) animation.current = expandedImage.current.animate([
-      { transform: originTransform(), opacity: .75 },
-      { transform: 'none', opacity: 1 },
-    ], { duration: 850, easing: 'cubic-bezier(.16,1,.3,1)' });
     return () => {
       clearTimeout(timer.current);
-      animation.current?.cancel();
       element.close();
       document.documentElement.classList.remove('look-open');
       if (trigger.isConnected) trigger.focus({ preventScroll: true });
@@ -433,12 +391,7 @@ function LookDialog({ selection, onDismiss }) {
     if (closing.current) return;
     closing.current = true;setIsClosing(true);
     if (reduced()) { onDismiss();return; }
-    animation.current?.cancel();
-    animation.current = expandedImage.current.animate([
-      { transform: 'none', opacity: 1 },
-      { transform: originTransform(), opacity: .3 },
-    ], { duration: 420, easing: 'cubic-bezier(.6,0,.3,1)', fill: 'forwards' });
-    timer.current = setTimeout(onDismiss, 430);
+    timer.current = setTimeout(onDismiss, 220);
   };
   return h('dialog', {
     ref: dialog, className: 'look-dialog look-dialog--' + item.id.split('-')[0] + (isClosing ? ' look-closing' : ''),
@@ -449,7 +402,7 @@ function LookDialog({ selection, onDismiss }) {
     h('button', { className: 'look-close', 'aria-label': 'Fechar detalhes da peça', onClick: close, autoFocus: true }, h('span', { 'aria-hidden': true }, '×')),
     h('div', { className: 'look-visual' },
       h('span', { className: 'look-arch', 'aria-hidden': true }),
-      h('img', { ref: expandedImage, className: 'look-image', src: item.image, alt: item.alt, width: 1414, height: 2000, draggable: false }),
+      h('img', { className: 'look-image', src: item.image, alt: item.alt, width: 1414, height: 2000, draggable: false }),
       h('span', { className: 'look-image-label' }, item.brand.toUpperCase() + ' / ' + item.id.split('-').at(-1))),
     h('div', { className: 'look-information' },
       h('p', { className: 'eyebrow' }, item.brand + ' — Um olhar de perto'),
@@ -521,7 +474,6 @@ function App() {
   }, [about]);
   return h(React.Fragment, null, h(LoadingScreen, { loading }), h('main', { inert: loading.phase !== 'done', className: `experience theme-${brand.id}${loading.phase !== 'loading' ? ' ui-ready' : ''}${paused ? ' is-paused' : ''}` },
     h(FashionCursor),
-    brand.id === 'victoria' && h('div', { className: 'victoria-background', 'aria-hidden': true }),
     brand.id === 'dior' && h('div', { className: 'dior-background', 'aria-hidden': true }),
     brand.id === 'mcqueen' && h('div', { className: 'mcqueen-background', 'aria-hidden': true }),
     h('div', { className: 'ambient', 'aria-hidden': true }),
@@ -538,7 +490,7 @@ function App() {
       start.current = null;
       if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5) navigate(dx < 0 ? 1 : -1);
     } }, h(Scene, { brand, phase, direction, paused, onSettled: loading.settleWorld, onOpen: openLook, onFabric: openFabric })),
-    h('p', { className: 'sr-only', role: 'status', 'aria-live': 'polite' }, `${brand.name}. Universo ${active + 1} de 4.`),
+    h('p', { className: 'sr-only', role: 'status', 'aria-live': 'polite' }, `${brand.name}. Universo ${active + 1} de ${brands.length}.`),
     h(Navigation, { active, select, navigate, busy: phase !== 'idle' }),
     look && h(LookDialog, { selection: look, onDismiss: dismissLook }),
     fabric && h(FabricDialog, { selection: fabric, onDismiss: dismissFabric }),
@@ -546,7 +498,7 @@ function App() {
       h('div', { className: 'about-content' },
         h('p', { className: 'eyebrow' }, 'Sobre Sphare'),
         h('h2', { id: 'about-title' }, 'A moda como espaço.'),
-        h('p', null, 'Uma galeria experimental que investiga forma, movimento e a linguagem de quatro maisons. Um encontro entre editorial de moda e instalação digital.'),
+        h('p', null, 'Uma galeria experimental que investiga forma, movimento e a linguagem de três maisons. Um encontro entre editorial de moda e instalação digital.'),
         h('p', { className: 'project-note' }, 'Projeto independente, sem afiliação às marcas. Esculturas digitais exploram a identidade de cada universo e marcam o espaço das futuras fotografias.'),
         h('button', { className: 'close-button', onClick: () => setAbout(false) }, 'Voltar à galeria ↗')))));
 }
